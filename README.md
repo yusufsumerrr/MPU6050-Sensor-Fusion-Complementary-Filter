@@ -52,7 +52,7 @@ We enable the I2C mode to activate the SDA and SCL pins.
 
 ---
 
-### ==🛠️ 4. How It Works?==
+### 🛠️ 4. How It Works?
 
 ```C
 /* USER CODE BEGIN 2 */
@@ -132,14 +132,19 @@ void mpu6050_init()
 - The `HAL_I2C_IsDeviceReady` function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
 
 <img width="785" height="47" alt="Pasted image 20251202151341" src="https://github.com/user-attachments/assets/0127cdf1-d8c0-453b-8f8f-7bdc337f9665" />
+
 - ``Gyroscope configuration``is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to `±500°/s`.
 
 <img width="1290" height="167" alt="Pasted image 20251221181714" src="https://github.com/user-attachments/assets/510ec7c7-67f8-4696-bb9e-4e0babafede8" />
+
 <img width="398" height="183" alt="Pasted image 20251221181513" src="https://github.com/user-attachments/assets/53f7a73b-d921-4754-85d4-38d619dd4493" />
+
 - ``Accelerometer configuration``is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to `±4g`.
 
 <img width="1290" height="169" alt="Pasted image 20251221182033" src="https://github.com/user-attachments/assets/9d74634c-c8f9-405d-ae67-89b37b0fa256" />
+
 <img width="377" height="192" alt="Pasted image 20251221182111" src="https://github.com/user-attachments/assets/5fa6a683-748f-49ca-b03f-27589c50b392" />
+
 - The MPU6050 comes from the factory with Sleep Mode enabled to save power. To activate the sensor’s internal oscillator and measurement units, the device is woken up by writing `0` to the `Power Management 1` register.
 
 ---
