@@ -208,7 +208,10 @@ void mpu6050_read()
 
 The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the ``Euler angles (Roll, Pitch, Yaw),``which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
 
+![Airplane_control_Roll_Pitch_Yaw](https://github.com/user-attachments/assets/01ad753e-ceb1-49d8-a24f-aac63820b836)
+
 https://github.com/user-attachments/assets/55c9ae1e-55b8-419f-b750-92c61daf1482
+
 - $\phi$ ``(Phi) – Roll:`` Rotation about the longitudinal (X) axis.
 - $\theta$ ``(Theta) – Pitch:`` Rotation about the lateral (Y) axis.
 - $\psi$ ``(Psi) – Yaw:`` Rotation about the vertical (Z) axis.
@@ -283,3 +286,8 @@ $$
 $$
 \theta_P = arctan(\frac{-Acc_X}{\sqrt{Acc_Y^2+Acc_Z^2}})
 $$
+
+
+
+
+
