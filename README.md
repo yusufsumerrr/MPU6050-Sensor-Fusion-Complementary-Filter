@@ -208,9 +208,7 @@ void mpu6050_read()
 
 The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the ``Euler angles (Roll, Pitch, Yaw),``which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
 
-![Airplane_control_Roll_Pitch_Yaw](https://github.com/user-attachments/assets/01ad753e-ceb1-49d8-a24f-aac63820b836)
-
-https://github.com/user-attachments/assets/55c9ae1e-55b8-419f-b750-92c61daf1482
+![Airplane_control_Roll_Pitch_Yaw (1)](https://github.com/user-attachments/assets/47011d33-7899-4b49-b2c7-b3fe929cafe9)
 
 - $\phi$ ``(Phi) – Roll:`` Rotation about the longitudinal (X) axis.
 - $\theta$ ``(Theta) – Pitch:`` Rotation about the lateral (Y) axis.
@@ -263,29 +261,38 @@ void euler_angle(float dt_val)
 - This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
 - Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the accelerometer data based on the gravity vector.
 
-==``Roll Angle``==
+``Roll Angle``
+
 <img width="504" height="177" alt="Pasted image 20251223232524" src="https://github.com/user-attachments/assets/9225465b-52ec-4a9a-868b-5f0441aade9c" />
+
 $$
 s^2=Acc_Z^2 + Acc_X^2
 $$
+
 $$
 tan\phi_R=\frac{Acc_Y}{s}
 $$
+
 $$
 \phi_R = arctan(\frac{Acc_Y}{\sqrt{Acc_X^2+Acc_Z^2}})
 $$
 
-==``Pitch Angle``==
+``Pitch Angle``
+
 <img width="518" height="172" alt="Pasted image 20251223232559" src="https://github.com/user-attachments/assets/fbfa4ddd-9cb7-4dbb-b9ad-a6aba3577553" />
+
 $$
 s^2=Acc_Z^2 + Acc_Y^2
 $$
+
 $$
 tan\theta_P=\frac{-Acc_X}{s}
 $$
+
 $$
 \theta_P = arctan(\frac{-Acc_X}{\sqrt{Acc_Y^2+Acc_Z^2}})
 $$
+
 
 
 
