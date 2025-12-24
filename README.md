@@ -320,6 +320,7 @@ r
 \end{bmatrix}
 $$
 
+
 **$\dot{\phi}$** → Angular rate of the Roll angle  
 **$\dot{\theta}$** → Angular rate of the Pitch angle
 
