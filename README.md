@@ -40,7 +40,7 @@ MPU6050 is a 6-axis (6-DOF) motion tracking sensor that integrates a 3-axis acce
 
 ---
 
-### 3. MPU6050 - STM32CubeIDE Configuration
+### 3. STM32CubeIDE Configuration
 We enable the I2C mode to activate the SDA and SCL pins.
 
 <img width="1213" height="613" alt="Pasted image 20251219180721" src="https://github.com/user-attachments/assets/c5005bac-1e09-4927-bfe6-6f4e292c2bbb" />
