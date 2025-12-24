@@ -330,6 +330,48 @@ $$
 **$\dot{\phi}$** → Angular rate of the Roll angle  
 **$\dot{\theta}$** → Angular rate of the Pitch angle
 
+Angular velocity expresses the rate of change of an angle with respect to time.
+
+$$
+\dot{\theta}(t) = \frac{d\theta}{dt}
+$$
+
+Euler angles are obtained by integrating these angular velocities over time.
+
+$$
+\theta(t) = \theta(t_0) + \int_{t_0}^{t} \dot{\theta}(\tau)\, d\tau
+$$
+
+$$
+\theta_k = \theta_{k-1} + \dot{\theta}_k \cdot \Delta t
+$$
+
+Here, the Euler angle rates are calculated using the angular velocity components along the body axes measured by the gyroscope:
+
+$$
+\dot{\phi}_k = g_x + \tan(\theta_{k-1}) \big( g_y \sin(\phi_{k-1}) + g_z \cos(\phi_{k-1}) \big)
+$$
+
+$$
+\dot{\theta}_k = g_y \cos(\phi_{k-1}) - g_z \sin(\phi_{k-1})
+$$
+
+4.To overcome the disadvantages of these two approaches, a Complementary Filter is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
+
+<img width="865" height="338" alt="Pasted image 20251224004215" src="https://github.com/user-attachments/assets/ddcc3e35-814e-4a3f-9088-6cc577830511" />
+
+$$
+\theta_k = \alpha\,\theta_{\text{gyro},k} + (1 - \alpha)\,\theta_{\text{acc},k} 
+$$
+
+$$
+\alpha:0 < \alpha < 1
+$$
+
+Sensor data exhibit different characteristics depending on their frequency content. The``gyroscope,``which measures an object’s instantaneous angular velocity, captures``high-frequency signals``representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The``accelerometer,``on the other hand, determines the tilt angle relative to the gravity vector and accurately measures``low-frequency components``that are stable in the long term, but it is easily affected by vibrations and sudden movements. The``complementary filter``combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
+
+> [!NOTE]
+> ``Drift error``is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
 
 
-
+5.Finally, the``Roll (φ)``and``Pitch (θ)``angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
