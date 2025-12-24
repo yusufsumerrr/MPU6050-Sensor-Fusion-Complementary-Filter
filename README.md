@@ -302,23 +302,21 @@ $$
 3.Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
 
 $$
-
-\begin{pmatrix}
+\begin{bmatrix}
 \dot{\phi} \\
 \dot{\theta} \\
 \dot{\psi}
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 & \sin\phi \, \tan\theta & \cos\phi \, \tan\theta \\
+\end{bmatrix} = 
+\begin{bmatrix}
+1 & \sin\phi \tan\theta & \cos\phi \tan\theta \\
 0 & \cos\phi & -\sin\phi \\
 0 & \frac{\sin\phi}{\cos\theta} & \frac{\cos\phi}{\cos\theta}
-\end{pmatrix}
-\begin{pmatrix}
+\end{bmatrix}
+\begin{bmatrix}
 p \\
 q \\
 r
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 
