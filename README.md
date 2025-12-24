@@ -262,6 +262,7 @@ void euler_angle(float dt_val)
 - Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
 
 ``Roll Angle``
+
 <img width="504" height="177" alt="Pasted image 20251223232524" src="https://github.com/user-attachments/assets/9225465b-52ec-4a9a-868b-5f0441aade9c" />
 
 $$
@@ -269,14 +270,15 @@ s^2=Acc_Z^2 + Acc_X^2
 $$
 
 $$
-tan\phi_R=\frac{Acc_Y}{s}
+tan(\phi_{\text{Roll}})=\frac{Acc_Y}{s}
 $$
 
 $$
-\phi_R = arctan(\frac{Acc_Y}{\sqrt{Acc_X^2+Acc_Z^2}})
+\phi_{\text{Roll}} = arctan(\frac{Acc_Y}{\sqrt{Acc_X^2+Acc_Z^2}})
 $$
 
 ``Pitch Angle``
+
 <img width="518" height="172" alt="Pasted image 20251223232559" src="https://github.com/user-attachments/assets/fbfa4ddd-9cb7-4dbb-b9ad-a6aba3577553" />
 
 $$
@@ -284,13 +286,14 @@ s^2=Acc_Z^2 + Acc_Y^2
 $$
 
 $$
-tan\theta_P=\frac{-Acc_X}{s}
+tan(\theta_{\text{Pitch}})=\frac{-Acc_X}{s}
 $$
 
 $$
-\theta_P = arctan(\frac{-Acc_X}{\sqrt{Acc_Y^2+Acc_Z^2}})
+\theta_{\text{Pitch}} = arctan(\frac{-Acc_X}{\sqrt{Acc_Y^2+Acc_Z^2}})
 $$
 
+> [!example] NOTE
 
 
 
