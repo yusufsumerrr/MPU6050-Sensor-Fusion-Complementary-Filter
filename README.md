@@ -202,7 +202,7 @@ void mpu6050_read()
 	z_gyr = ((uint8_t) dataz[0] << 8) + dataz[1];
 }
 ```
-- This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C ``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
+- This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
 
 ---
 
@@ -259,10 +259,9 @@ void euler_angle(float dt_val)
 }
 ```
 - This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
-- Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the accelerometer data based on the gravity vector.
+- Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
 
 ``Roll Angle``
-
 <img width="504" height="177" alt="Pasted image 20251223232524" src="https://github.com/user-attachments/assets/9225465b-52ec-4a9a-868b-5f0441aade9c" />
 
 $$
@@ -278,7 +277,6 @@ $$
 $$
 
 ``Pitch Angle``
-
 <img width="518" height="172" alt="Pasted image 20251223232559" src="https://github.com/user-attachments/assets/fbfa4ddd-9cb7-4dbb-b9ad-a6aba3577553" />
 
 $$
