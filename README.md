@@ -321,7 +321,7 @@ $$
 
 $$
 \begin{aligned}
-\dot{\phi}   &= p + \tan\theta \, (q \sin\phi + r \cos\phi) \\
+\dot{\phi}   &= p + \tan\theta * (q \sin\phi + r \cos\phi) \\
 \dot{\theta} &= q \cos\phi - r \sin\phi \\
 \dot{\psi}   &= \frac{q \sin\phi + r \cos\phi}{\cos\theta}
 \end{aligned}
