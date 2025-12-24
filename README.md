@@ -320,14 +320,6 @@ r
 \end{bmatrix}
 $$
 
-$$
-\begin{aligned}
-\dot{\phi}   &= p + \tan\theta *(q *\sin\phi  + r *\cos\phi)  \\
-\dot{\theta} &= q *\cos\phi - r* \sin\phi \\
-\dot{\psi}   &= \frac{q \sin\phi + r \cos\phi}{\cos\theta}
-\end{aligned}
-$$
-
 **$\dot{\phi}$** → Angular rate of the Roll angle  
 **$\dot{\theta}$** → Angular rate of the Pitch angle
 
