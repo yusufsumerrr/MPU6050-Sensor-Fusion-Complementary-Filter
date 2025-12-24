@@ -258,8 +258,9 @@ void euler_angle(float dt_val)
     HAL_UART_Transmit(&huart2, (uint8_t*) uartBuffer, strlen(uartBuffer), HAL_MAX_DELAY);
 }
 ```
-- This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
-- Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
+1.This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
+
+2.Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
 
 ``Roll Angle from the accelerometer`` 
 
@@ -298,7 +299,21 @@ $$
 > 
 > <img width="319" height="292" alt="Pasted image 20251207194725" src="https://github.com/user-attachments/assets/3bbd3f81-2868-42e8-b75f-512e417a945c" />
 
+3.Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
 
+$$
+\begin{bmatrix} \dot{\phi} \\ \dot{\theta}  \end{bmatrix} = \begin{bmatrix} 1 & \sin\phi \tan\theta & \cos\phi \tan\theta \\ 0 & \cos\phi & -\sin\phi  \end{bmatrix} \begin{bmatrix} p \\ q \end{bmatrix}
+$$
+
+$$
+\begin{aligned}
+\dot{\phi}   &= p + \tan\theta *(q *\sin\phi  + r *\cos\phi)  \\
+\dot{\theta} &= q *\cos\phi - r* \sin\phi \\
+\end{aligned}
+$$
+
+**$\dot{\phi}$** → Angular rate of the Roll angle  
+**$\dot{\theta}$** → Angular rate of the Pitch angle
 
 
 
