@@ -294,6 +294,7 @@ $$
 $$
 
 > [!example]
+>
 > When the accelerometer is stationary, it measures only the ``gravitational acceleration (g)``, and the gravity vector always points toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, the measured acceleration is approximately``1g``. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration also includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately ``1g`` in the stationary state, and deviates from this value during motion.
 
 
