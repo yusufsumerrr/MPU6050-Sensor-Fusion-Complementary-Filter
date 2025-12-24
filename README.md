@@ -328,9 +328,9 @@ $$
 $$
 
 
-**$\dot{\phi}$** → Angular rate of the Roll angle  
-**$\dot{\theta}$** → Angular rate of the Pitch angle
-**$\dot{\psi}$** → Angular rate of the Yaw angle
+$$\dot{\phi}$$ → Angular rate of the Roll angle  
+$$\dot{\theta}$$ → Angular rate of the Pitch angle  
+$$\dot{\psi}$$ → Angular rate of the Yaw angle
 
 
 Angular velocity expresses the rate of change of an angle with respect to time.
