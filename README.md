@@ -261,7 +261,7 @@ void euler_angle(float dt_val)
 - This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
 - Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
 
-``Roll Angle``
+``Roll Angle from the accelerometer`` 
 
 <img width="504" height="177" alt="Pasted image 20251223232524" src="https://github.com/user-attachments/assets/9225465b-52ec-4a9a-868b-5f0441aade9c" />
 
@@ -277,7 +277,7 @@ $$
 \phi_{\text{Roll}} = arctan(\frac{Acc_Y}{\sqrt{Acc_X^2+Acc_Z^2}})
 $$
 
-``Pitch Angle``
+``Pitch Angle from the accelerometer``
 
 <img width="518" height="172" alt="Pasted image 20251223232559" src="https://github.com/user-attachments/assets/fbfa4ddd-9cb7-4dbb-b9ad-a6aba3577553" />
 
@@ -293,7 +293,8 @@ $$
 \theta_{\text{Pitch}} = arctan(\frac{-Acc_X}{\sqrt{Acc_Y^2+Acc_Z^2}})
 $$
 
-> [!example] NOTE
+> [!example]
+> When the accelerometer is stationary, it measures only the ``gravitational acceleration (g)``, and the gravity vector always points toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, the measured acceleration is approximately``1g``. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration also includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately ``1g`` in the stationary state, and deviates from this value during motion.
 
 
 
