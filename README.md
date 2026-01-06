@@ -355,7 +355,7 @@ $$
     thetaGyro += thetaHatRaw * dt_val;
 ```
 
-10.To overcome the disadvantages of these two approaches, a Complementary Filter is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
+10.To overcome the disadvantages of these two approaches, a `Complementary Filter` is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
 
 <img width="865" height="338" alt="Pasted image 20251224004215" src="https://github.com/user-attachments/assets/ddcc3e35-814e-4a3f-9088-6cc577830511" />
 
