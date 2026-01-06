@@ -218,7 +218,7 @@ void mpu6050_read()
 - $\theta$ ``(Theta) – Pitch:`` Rotation about the lateral (Y) axis.
 - $\psi$ ``(Psi) – Yaw:`` Rotation about the vertical (Z) axis.
 
-This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
+The `euler_angle(float dt_val)` function calculates the``Roll``and``Pitch``Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and presents the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g,`while the gyroscope data are converted to``rad/s``after their offsets are subtracted.
 
 ```c
 void euler_angle(float dt_val)
