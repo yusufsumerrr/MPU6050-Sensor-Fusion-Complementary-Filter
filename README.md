@@ -153,7 +153,7 @@ void mpu6050_init()
 
 ---
 
-Now let’s talk about the `gyro_calibrate()` function.
+5.Now let’s talk about the `gyro_calibrate()` function. Gyroscope sensors inherently exhibit a systematic error known as bias, which causes the output to deviate from zero even when the sensor is stationary. The `gyro_calibrate()` function implemented in this project is executed at system startup, during a period when the sensor is assumed to be completely stable, in order to eliminate this error. The function collects 100 samples from all three axes ($g_x, g_y, g_z$), computes their arithmetic mean, and determines the sensor’s static error profile (offset). These bias values are then subtracted from every raw measurement during runtime to normalize the sensor’s zero point. This ``bias compensation``minimizes drift when the sensor is stationary and enables angular velocity measurements with higher accuracy and reduced noise.
 
 ```c
 void gyro_calibrate()
@@ -174,9 +174,10 @@ void gyro_calibrate()
 	gz_bias /= N; 					// average bias (offset) for Z-axis
 }
 ```
-- Gyroscope sensors inherently exhibit a systematic error known as bias, which causes the output to deviate from zero even when the sensor is stationary. The `gyro_calibrate()` function implemented in this project is executed at system startup, during a period when the sensor is assumed to be completely stable, in order to eliminate this error. The function collects 100 samples from all three axes ($g_x, g_y, g_z$), computes their arithmetic mean, and determines the sensor’s static error profile (offset). These bias values are then subtracted from every raw measurement during runtime to normalize the sensor’s zero point. This ``bias compensation``minimizes drift when the sensor is stationary and enables angular velocity measurements with higher accuracy and reduced noise.
 
 ---
+
+6.This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
 
 ```c
 void mpu6050_read()
@@ -206,11 +207,10 @@ void mpu6050_read()
 	z_gyr = ((uint8_t) dataz[0] << 8) + dataz[1];
 }
 ```
-- This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
 
 ---
 
-The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the ``Euler angles (Roll, Pitch, Yaw),``which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
+7.The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the ``Euler angles (Roll, Pitch, Yaw),``which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
 
 ![Airplane_control_Roll_Pitch_Yaw (1)](https://github.com/user-attachments/assets/47011d33-7899-4b49-b2c7-b3fe929cafe9)
 
@@ -218,6 +218,7 @@ The raw accelerometer and gyroscope data have been read from the MPU6050 sensor.
 - $\theta$ ``(Theta) – Pitch:`` Rotation about the lateral (Y) axis.
 - $\psi$ ``(Psi) – Yaw:`` Rotation about the vertical (Z) axis.
 
+This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
 
 ```c
 void euler_angle(float dt_val)
@@ -233,10 +234,6 @@ void euler_angle(float dt_val)
 	float gx = ((float) x_gyr - gx_bias) / GYRO_SENS * DEG_TO_RAD;
 	float gy = ((float) y_gyr - gy_bias) / GYRO_SENS * DEG_TO_RAD;
 	float gz = ((float) z_gyr - gz_bias) / GYRO_SENS * DEG_TO_RAD;
-
-	// --- Roll & Pitch from ACC ---
-    float phiAcc = atan2f(ay, sqrtf(ax * ax + az * az));
-    float thetaAcc = atan2f(-ax, sqrtf(ay * ay + az * az));
 
     // --- Roll & Pitch Rates from GYRO ---
     float phiHatRaw = gx + tanf(thetaGyro) * (sinf(phiGyro) * gy + cosf(phiGyro) * gz);
@@ -262,9 +259,8 @@ void euler_angle(float dt_val)
     HAL_UART_Transmit(&huart2, (uint8_t*) uartBuffer, strlen(uartBuffer), HAL_MAX_DELAY);
 }
 ```
-1.This function calculates the Roll and Pitch Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and produces the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g`, while the gyroscope data are converted to `rad/s` after subtracting their offsets.
 
-2.Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
+8.Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
 
 ``Roll Angle from the accelerometer`` 
 
@@ -297,6 +293,12 @@ $$
 $$
 \theta_{\text{Pitch}} = arctan(\frac{-Acc_X}{\sqrt{Acc_Y^2+Acc_Z^2}})
 $$
+
+```c
+	// --- Roll & Pitch from ACC ---
+    float phiAcc = atan2f(ay, sqrtf(ax * ax + az * az));
+    float thetaAcc = atan2f(-ax, sqrtf(ay * ay + az * az));
+```
 
 > [!warning]
 > When the accelerometer is stationary, it measures only the ``gravitational acceleration (g)``, and the gravity vector always points toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, the measured acceleration is approximately``1g``. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration also includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately ``1g`` in the stationary state, and deviates from this value during motion.
