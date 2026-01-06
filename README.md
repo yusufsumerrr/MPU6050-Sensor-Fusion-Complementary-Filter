@@ -5,7 +5,7 @@ This project performs real-time attitude estimation using data from the MPU6050 
 
 ---
 
-### 1. What is MPU6050?
+### `1. What is MPU6050?`
 MPU6050 is a 6-axis (6-DOF) motion tracking sensor that integrates a 3-axis accelerometer and a 3-axis gyroscope in a single package.
 
 1. `3-Axis Accelerometer` ($m/s^2$)
