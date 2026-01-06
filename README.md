@@ -367,6 +367,8 @@ $$
 \alpha:0 < \alpha < 1
 $$
 
+Sensor data exhibit different characteristics depending on their frequency content. The``gyroscope,``which measures an object’s instantaneous angular velocity, captures``high-frequency signals``representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The``accelerometer,``on the other hand, determines the tilt angle relative to the gravity vector and accurately measures``low-frequency components``that are stable in the long term, but it is easily affected by vibrations and sudden movements. The``complementary filter``combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
+
 ```c
     // --- Roll & Pitch Rates from COMPLEMENTARY FILTER ---
     float phiHatFiltered = gx + tanf(thetaComp) * (sinf(phiComp) * gy + cosf(phiComp) * gz);
@@ -376,8 +378,6 @@ $$
     phiComp = alpha * (phiComp + phiHatFiltered * dt_val) + (1.0f - alpha) * phiAcc;
     thetaComp = alpha * (thetaComp + thetaHatFiltered * dt_val) + (1.0f - alpha) * thetaAcc;
 ```
-
-Sensor data exhibit different characteristics depending on their frequency content. The``gyroscope,``which measures an object’s instantaneous angular velocity, captures``high-frequency signals``representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The``accelerometer,``on the other hand, determines the tilt angle relative to the gravity vector and accurately measures``low-frequency components``that are stable in the long term, but it is easily affected by vibrations and sudden movements. The``complementary filter``combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
 
 > [!NOTE]
 > ``Drift error``is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
