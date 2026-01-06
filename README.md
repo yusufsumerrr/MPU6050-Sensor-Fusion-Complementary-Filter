@@ -143,6 +143,7 @@ void mpu6050_init()
 	else{
 		printf(" Sleep Mode\n");
 	}
+}
 ```
 
 ---
