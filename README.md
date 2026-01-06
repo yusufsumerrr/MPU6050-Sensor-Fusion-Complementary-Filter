@@ -1,4 +1,4 @@
-# MPU6050-Sensor-Fusion-Complementary-Filter
+# STM32-MPU6050-Complementary-Filter
 This project performs real-time attitude estimation using data from the MPU6050 Inertial Measurement Unit (IMU). The process begins with the calculation of the fundamental Euler angles (`Roll` and `Pitch`) using the gravity components obtained from the accelerometer and the angular velocity data from the gyroscope. These raw angle estimates are then combined using a `Complementary Filter` algorithm, which optimizes the high-frequency noise of the accelerometer and the time-accumulated drift error of the gyroscope. As a result of sensor fusion, the stabilized orientation data are transmitted via serial communication and visualized in real time as a 3D representation using a Python/PyGame-based interface to evaluate the system’s dynamic performance.
 
 ![WhatsApp Video 2025-12-21 at 01 58 11 (1)](https://github.com/user-attachments/assets/199afc61-f386-4e9e-9ac5-62977e6f4f45)
