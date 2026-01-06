@@ -62,6 +62,8 @@ gyro_calibrate();
 ```
 At system startup, we initialize the functions that we have defined. Now, let’s go through these functions. First, we start with the `mpu6050_init()` function.
 
+<img width="785" height="47" alt="Pasted image 20251202151341" src="https://github.com/user-attachments/assets/0127cdf1-d8c0-453b-8f8f-7bdc337f9665" />
+
 ```c
 #define DEVICE_ADDRESS 0x68 //1101000 (Slave address)
 
@@ -78,13 +80,8 @@ At system startup, we initialize the functions that we have defined. Now, let’
 #define REF_CONFIG_GYRO 27
 #define REF_CONFIG_ACC 28
 #define REF_CONFIG_CTRL 107
-
-
-
 ```
 1.The `HAL_I2C_IsDeviceReady` function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
-
-<img width="785" height="47" alt="Pasted image 20251202151341" src="https://github.com/user-attachments/assets/0127cdf1-d8c0-453b-8f8f-7bdc337f9665" />
 
 ```c
 void mpu6050_init() 
@@ -99,7 +96,6 @@ void mpu6050_init()
 	}
 ```
 
-
 2.``Gyroscope configuration``is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to `±500°/s`.
 
 <img width="1290" height="167" alt="Pasted image 20251221181714" src="https://github.com/user-attachments/assets/510ec7c7-67f8-4696-bb9e-4e0babafede8" />
@@ -108,14 +104,14 @@ void mpu6050_init()
 
 ```c
 	// Register 27 – Gyroscope Configuration
-uint8_t temp_data = FS_GYRO_500; // ±500°/s
-ret = HAL_I2C_Mem_Write(&hi2c1, DEVICE_ADDRESS << 1, REF_CONFIG_GYRO, 1, (uint8_t*) &temp_data, 1, 100);
-if (ret == HAL_OK){
-	printf(" Successfully written to register 27. \n");
-} 
-else{
-	printf("E R R O R\n");
-}
+	uint8_t temp_data = FS_GYRO_500; // ±500°/s
+	ret = HAL_I2C_Mem_Write(&hi2c1, DEVICE_ADDRESS << 1, REF_CONFIG_GYRO, 1, (uint8_t*) &temp_data, 1, 100);
+	if (ret == HAL_OK){
+		printf(" Successfully written to register 27. \n");
+	} 
+	else{
+		printf("E R R O R\n");
+	}
 ```
 
 3.``Accelerometer configuration``is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to `±4g`.
@@ -125,29 +121,28 @@ else{
 <img width="377" height="192" alt="Pasted image 20251221182111" src="https://github.com/user-attachments/assets/5fa6a683-748f-49ca-b03f-27589c50b392" />
 
 ```c
-// Register 28 – Accelerometer Configuration
-temp_data = FS_ACC_4G;
-ret = HAL_I2C_Mem_Write(&hi2c1, DEVICE_ADDRESS << 1, REF_CONFIG_ACC, 1, (uint8_t*) &temp_data, 1, 100);
-if (ret == HAL_OK){
-	printf(" Successfully written to register 28.\n");
-} 
-else{
-	printf(" E R R O R\n");
-}
+	// Register 28 – Accelerometer Configuration
+	temp_data = FS_ACC_4G;
+	ret = HAL_I2C_Mem_Write(&hi2c1, DEVICE_ADDRESS << 1, REF_CONFIG_ACC, 1, (uint8_t*) &temp_data, 1, 100);
+	if (ret == HAL_OK){
+		printf(" Successfully written to register 28.\n");
+	} 
+	else{
+		printf(" E R R O R\n");
+	}
 ```
-
 
 4.The MPU6050 comes from the factory with Sleep Mode enabled to save power. To activate the sensor’s internal oscillator and measurement units, the device is woken up by writing `0` to the `Power Management 1` register.
 ```c
-// Register 107 – Power Management 1
-temp_data = 0;
-ret = HAL_I2C_Mem_Write(&hi2c1, DEVICE_ADDRESS << 1, REF_CONFIG_CTRL, 1, (uint8_t*) &temp_data, 1, 100);
-if (ret == HAL_OK){
-	printf(" Power Mode\n");
-} 
-else{
-	printf(" Sleep Mode\n");
-}
+	// Register 107 – Power Management 1
+	temp_data = 0;
+	ret = HAL_I2C_Mem_Write(&hi2c1, DEVICE_ADDRESS << 1, REF_CONFIG_CTRL, 1, (uint8_t*) &temp_data, 1, 100);
+	if (ret == HAL_OK){
+		printf(" Power Mode\n");
+	} 
+	else{
+		printf(" Sleep Mode\n");
+	}
 ```
 
 ---
