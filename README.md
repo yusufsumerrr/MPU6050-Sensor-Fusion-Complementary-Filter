@@ -360,7 +360,7 @@ $$
 <img width="865" height="338" alt="Pasted image 20251224004215" src="https://github.com/user-attachments/assets/ddcc3e35-814e-4a3f-9088-6cc577830511" />
 
 $$
-\theta_k = \alpha\,\theta_{\text{gyro},k} + (1 - \alpha)\,\theta_{\text{acc},k} 
+\theta_k = \alpha\*\theta_{\text{gyro},k} + (1 - \alpha)\*\theta_{\text{acc},k} 
 $$
 
 $$
