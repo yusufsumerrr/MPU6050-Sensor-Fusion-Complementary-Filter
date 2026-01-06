@@ -279,9 +279,11 @@ $$
 ```
 
 > [!warning]
-> When the accelerometer is stationary, it measures only the gravitational acceleration (g), and the gravity vector is directed toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, it is approximately 1g ($\sqrt{a_x^2 + a_y^2 + a_z^2} = 1$). Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately 1g in the stationary state and deviates from this value during motion.
+> When the accelerometer is stationary, it measures only the gravitational acceleration (g), and the gravity vector is directed toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, it is approximately 1g. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately 1g in the stationary state and deviates from this value during motion.
+>$\sqrt{a_x^2 + a_y^2 + a_z^2} = 1$
 > 
 > <img width="319" height="292" alt="Pasted image 20251207194725" src="https://github.com/user-attachments/assets/3bbd3f81-2868-42e8-b75f-512e417a945c" />
+
 
 9.Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
 
