@@ -74,14 +74,14 @@ We enable the I2C mode to activate the SDA and SCL pins.
 #define REF_CONFIG_CTRL 107
 ```
 
+At system startup, we initialize the functions that we have defined. Now, let’s go through these functions. First, we start with the `mpu6050_init()` function.
+
 ```C
 /* USER CODE BEGIN 2 */
 mpu6050_init();
 gyro_calibrate();
 /* USER CODE END 2 */
 ```
-At system startup, we initialize the functions that we have defined. Now, let’s go through these functions. First, we start with the `mpu6050_init()` function.
-
 
 1.The `HAL_I2C_IsDeviceReady` function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
 
