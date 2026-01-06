@@ -234,30 +234,6 @@ void euler_angle(float dt_val)
 	float gx = ((float) x_gyr - gx_bias) / GYRO_SENS * DEG_TO_RAD;
 	float gy = ((float) y_gyr - gy_bias) / GYRO_SENS * DEG_TO_RAD;
 	float gz = ((float) z_gyr - gz_bias) / GYRO_SENS * DEG_TO_RAD;
-
-    // --- Roll & Pitch Rates from GYRO ---
-    float phiHatRaw = gx + tanf(thetaGyro) * (sinf(phiGyro) * gy + cosf(phiGyro) * gz);
-    float thetaHatRaw = cosf(phiGyro) * gy - sinf(phiGyro) * gz;
-    phiGyro += phiHatRaw * dt_val;
-    thetaGyro += thetaHatRaw * dt_val;
-
-    // --- Roll & Pitch Rates from COMPLEMENTARY FILTER ---
-    float phiHatFiltered = gx + tanf(thetaComp) * (sinf(phiComp) * gy + cosf(phiComp) * gz);
-    float thetaHatFiltered = cosf(phiComp) * gy - sinf(phiComp) * gz;
-
-    float alpha = 0.98f;
-    phiComp = alpha * (phiComp + phiHatFiltered * dt_val) + (1.0f - alpha) * phiAcc;
-    thetaComp = alpha * (thetaComp + thetaHatFiltered * dt_val) + (1.0f - alpha) * thetaAcc;
-
-    // --- UART data transmission ---
-    snprintf(uartBuffer, sizeof(uartBuffer),
-             "%.2f %.2f %.2f %.2f %.2f %.2f\r\n",
-             phiAcc * RAD_TO_DEG,   -thetaAcc * RAD_TO_DEG,    // ACC
-			 phiGyro * RAD_TO_DEG,  -thetaGyro * RAD_TO_DEG,   // GYRO
-             phiComp * RAD_TO_DEG,  -thetaComp * RAD_TO_DEG    // FILTER
-             );
-    HAL_UART_Transmit(&huart2, (uint8_t*) uartBuffer, strlen(uartBuffer), HAL_MAX_DELAY);
-}
 ```
 
 8.Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
@@ -301,11 +277,11 @@ $$
 ```
 
 > [!warning]
-> When the accelerometer is stationary, it measures only the ``gravitational acceleration (g)``, and the gravity vector always points toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, the measured acceleration is approximately``1g``. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration also includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately ``1g`` in the stationary state, and deviates from this value during motion.
-> 
+> When the accelerometer is stationary, it measures only the gravitational acceleration (g), and the gravity vector is directed toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, it is approximately 1g. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately 1g in the stationary state and deviates from this value during motion.
+> $\sqrt{a_x^2 + a_y^2 + a_z^2} = 1$
 > <img width="319" height="292" alt="Pasted image 20251207194725" src="https://github.com/user-attachments/assets/3bbd3f81-2868-42e8-b75f-512e417a945c" />
 
-3.Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
+9.Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
 
 $$
 \begin{bmatrix}
@@ -366,7 +342,15 @@ $$
 \dot{\theta}_k = g_y \cos(\phi_{k-1}) - g_z \sin(\phi_{k-1})
 $$
 
-4.To overcome the disadvantages of these two approaches, a Complementary Filter is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
+```c
+	// --- Roll & Pitch Rates from GYRO ---
+    float phiHatRaw = gx + tanf(thetaGyro) * (sinf(phiGyro) * gy + cosf(phiGyro) * gz);
+    float thetaHatRaw = cosf(phiGyro) * gy - sinf(phiGyro) * gz;
+    phiGyro += phiHatRaw * dt_val;
+    thetaGyro += thetaHatRaw * dt_val;
+```
+
+10.To overcome the disadvantages of these two approaches, a Complementary Filter is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
 
 <img width="865" height="338" alt="Pasted image 20251224004215" src="https://github.com/user-attachments/assets/ddcc3e35-814e-4a3f-9088-6cc577830511" />
 
@@ -378,13 +362,35 @@ $$
 \alpha:0 < \alpha < 1
 $$
 
+```c
+    // --- Roll & Pitch Rates from COMPLEMENTARY FILTER ---
+    float phiHatFiltered = gx + tanf(thetaComp) * (sinf(phiComp) * gy + cosf(phiComp) * gz);
+    float thetaHatFiltered = cosf(phiComp) * gy - sinf(phiComp) * gz;
+
+    float alpha = 0.98f;
+    phiComp = alpha * (phiComp + phiHatFiltered * dt_val) + (1.0f - alpha) * phiAcc;
+    thetaComp = alpha * (thetaComp + thetaHatFiltered * dt_val) + (1.0f - alpha) * thetaAcc;
+```
+
 Sensor data exhibit different characteristics depending on their frequency content. The``gyroscope,``which measures an object’s instantaneous angular velocity, captures``high-frequency signals``representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The``accelerometer,``on the other hand, determines the tilt angle relative to the gravity vector and accurately measures``low-frequency components``that are stable in the long term, but it is easily affected by vibrations and sudden movements. The``complementary filter``combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
 
 > [!NOTE]
 > ``Drift error``is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
 
 
-5.Finally, the``Roll (φ)``and``Pitch (θ)``angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
+11.Finally, the``Roll (φ)``and``Pitch (θ)``angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
+
+```c
+    // --- UART data transmission ---
+    snprintf(uartBuffer, sizeof(uartBuffer),
+             "%.2f %.2f %.2f %.2f %.2f %.2f\r\n",
+             phiAcc * RAD_TO_DEG,   -thetaAcc * RAD_TO_DEG,    // ACC
+			 phiGyro * RAD_TO_DEG,  -thetaGyro * RAD_TO_DEG,   // GYRO
+             phiComp * RAD_TO_DEG,  -thetaComp * RAD_TO_DEG    // FILTER
+             );
+    HAL_UART_Transmit(&huart2, (uint8_t*) uartBuffer, strlen(uartBuffer), HAL_MAX_DELAY);
+}
+```
 
 ---
 
