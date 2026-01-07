@@ -179,7 +179,7 @@ void gyro_calibrate()
 
 ---
 
-	6.This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
+6. This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
 
 ```c
 void mpu6050_read()
