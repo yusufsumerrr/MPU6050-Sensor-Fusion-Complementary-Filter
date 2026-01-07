@@ -130,6 +130,8 @@ void mpu6050_init()
 	}
 ```
 
+---
+
 4.	The MPU6050 comes from the factory with Sleep Mode enabled to save power. To activate the sensor’s internal oscillator and measurement units, the device is woken up by writing `0` to the `Power Management 1` register.
 
 ```c
@@ -230,6 +232,8 @@ void euler_angle(float dt_val)
 	float gz = ((float) z_gyr - gz_bias) / GYRO_SENS * DEG_TO_RAD;
 ```
 
+---
+
 8.	Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
 
 ``Roll Angle from the accelerometer`` 
@@ -270,6 +274,8 @@ $$
     float thetaAcc = atan2f(-ax, sqrtf(ay * ay + az * az));
 ```
 
+---
+
 > [!warning]
 > When the accelerometer is stationary, it measures only the gravitational acceleration (g), and the gravity vector is directed toward the center of the Earth. On axes perpendicular to gravity (X and Y), the measured acceleration is close to zero, while on the axis parallel to gravity, it is approximately 1g. Depending on the sensor’s orientation, this value is distributed among the corresponding axes. When the sensor is in motion, the measured acceleration includes dynamic acceleration components in addition to gravity. Therefore, the magnitude of the acceleration vector is approximately 1g in the stationary state and deviates from this value during motion.
 > 
@@ -277,6 +283,7 @@ $$
 > 
 > <img width="319" height="292" alt="Pasted image 20251207194725" src="https://github.com/user-attachments/assets/3bbd3f81-2868-42e8-b75f-512e417a945c" />
 
+---
 
 9.	Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
 
@@ -347,6 +354,8 @@ $$
     thetaGyro += thetaHatRaw * dt_val;
 ```
 
+---
+
 10.	To overcome the disadvantages of these two approaches, a `Complementary Filter` is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
 
 <img width="865" height="338" alt="Pasted image 20251224004215" src="https://github.com/user-attachments/assets/ddcc3e35-814e-4a3f-9088-6cc577830511" />
@@ -371,9 +380,12 @@ Sensor data exhibit different characteristics depending on their frequency conte
     thetaComp = alpha * (thetaComp + thetaHatFiltered * dt_val) + (1.0f - alpha) * thetaAcc;
 ```
 
+---
+
 > [!NOTE]
 > ``Drift error``is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
 
+---
 
 11.	Finally, the``Roll (φ)``and``Pitch (θ)``angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
 
