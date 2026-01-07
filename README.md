@@ -100,12 +100,6 @@ void mpu6050_init()
 
 2.	``Gyroscope configuration``is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to `±500°/s`.
 
-<img width="398" height="183" alt="Pasted image 20251221181513" src="https://github.com/user-attachments/assets/53f7a73b-d921-4754-85d4-38d619dd4493" />
-
-<img width="1290" height="167" alt="Pasted image 20251221181714" src="https://github.com/user-attachments/assets/510ec7c7-67f8-4696-bb9e-4e0babafede8" />
-
-
-
 ```c
 	// Register 27 – Gyroscope Configuration
 	uint8_t temp_data = FS_GYRO_500; // ±500°/s
@@ -119,12 +113,6 @@ void mpu6050_init()
 ```
 
 3.	``Accelerometer configuration``is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to `±4g`.
-
-<img width="377" height="192" alt="Pasted image 20251221182111" src="https://github.com/user-attachments/assets/5fa6a683-748f-49ca-b03f-27589c50b392" />
-
-<img width="1290" height="169" alt="Pasted image 20251221182033" src="https://github.com/user-attachments/assets/9d74634c-c8f9-405d-ae67-89b37b0fa256" />
-
-
 
 ```c
 	// Register 28 – Accelerometer Configuration
