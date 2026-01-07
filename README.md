@@ -83,7 +83,7 @@ gyro_calibrate();
 /* USER CODE END 2 */
 ```
 
-1.The `HAL_I2C_IsDeviceReady` function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
+1.	The `HAL_I2C_IsDeviceReady` function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
 
 ```c
 void mpu6050_init() 
