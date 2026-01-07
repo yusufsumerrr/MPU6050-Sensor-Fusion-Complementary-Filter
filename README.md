@@ -98,6 +98,8 @@ void mpu6050_init()
 	}
 ```
 
+---
+
 2.	``Gyroscope configuration``is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to `±500°/s`.
 
 ```c
@@ -111,6 +113,8 @@ void mpu6050_init()
 		printf("E R R O R\n");
 	}
 ```
+
+---
 
 3.	``Accelerometer configuration``is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to `±4g`.
 
