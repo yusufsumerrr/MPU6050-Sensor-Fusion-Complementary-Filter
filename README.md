@@ -387,7 +387,7 @@ Sensor data exhibit different characteristics depending on their frequency conte
 
 ---
 
-11.	Finally, the**``Roll (φ)``** and **``Pitch (θ)``** angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
+11.	Finally, the **``Roll (φ)``** and **``Pitch (θ)``** angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
 
 ```c
     // --- UART data transmission ---
