@@ -8,14 +8,14 @@ This project performs real-time attitude estimation using data from the MPU6050 
 ### `1. What is MPU6050?`
 MPU6050 is a 6-axis (6-DOF) motion tracking sensor that integrates a 3-axis accelerometer and a 3-axis gyroscope in a single package.
 
-1. #### ``3-Axis Accelerometer`` ($m/s^2$)
+1. #### **``3-Axis Accelerometer``** ($m/s^2$)
     - Measures linear acceleration (change in linear velocity) along the X, Y, and Z axes.
     - Enables estimation of the device’s tilt angle (static orientation) relative to the ground by tracking the gravity vector.
     - Stable in the long term and does not suffer from drift.
     - Highly sensitive to vibrations and sudden movements (noise).
     - Adjustable acceleration range between ±2g, ±4g, ±8g, and ±16g.
 
-2. #### ``3-Axis Gyroscope`` ($rad/s$)
+2. #### **``3-Axis Gyroscope``** ($rad/s$)
     - Measures the angular velocity of the device around its own axes.
     - Captures rapid motions and orientation changes with high temporal accuracy.
     - Resistant to vibrations and provides smooth data.
@@ -28,15 +28,15 @@ MPU6050 is a 6-axis (6-DOF) motion tracking sensor that integrates a 3-axis acce
 
 <img width="197" height="256" alt="images" src="https://github.com/user-attachments/assets/6290fc2a-ce72-4699-a37f-b5923b8fe8d7" />
 
-- ``VCC:``Power supply input. It is typically powered with 3.3 V or 5 V.
-- ``GND:``Ground connection.
-- ``SCL (Serial Clock Line):``Serial clock line. It carries the clock signal that synchronizes the timing and speed of data transmission.
-- ``SDA (Serial Data Line):``Bidirectional serial data line. Accelerometer and gyroscope data from the sensor are transmitted to the microcontroller through this line.
-- ``XDA & XCL (Auxiliary Data/Clock):``Auxiliary I2C lines. They are used to connect a secondary sensor, such as a magnetometer (compass), to the MPU6050 and allow the sensor to process this data directly. In standard applications, these pins are usually left unconnected.
-- ``AD0 (Address Select):``Used to select the I2C address of the sensor. This pin allows two MPU6050 devices to be connected on the same I2C bus.
+- **``VCC:``**Power supply input. It is typically powered with 3.3 V or 5 V.
+- **``GND:``**Ground connection.
+- **``SCL (Serial Clock Line):``**Serial clock line. It carries the clock signal that synchronizes the timing and speed of data transmission.
+- **``SDA (Serial Data Line):``**Bidirectional serial data line. Accelerometer and gyroscope data from the sensor are transmitted to the microcontroller through this line.
+- **``XDA & XCL (Auxiliary Data/Clock):``**Auxiliary I2C lines. They are used to connect a secondary sensor, such as a magnetometer (compass), to the MPU6050 and allow the sensor to process this data directly. In standard applications, these pins are usually left unconnected.
+- **``AD0 (Address Select):``**Used to select the I2C address of the sensor. This pin allows two MPU6050 devices to be connected on the same I2C bus.
     - **AD0 = 0:** Device address is ``0x68``.
     - **AD0 = 1:** Device address is ``0x69``.
-- ``INT (Interrupt):``Interrupt output pin. It sends a signal to the microcontroller when data is ready or when motion is detected. This eliminates the need for continuous polling, improving processing efficiency and reducing power consumption.
+- **``INT (Interrupt):``**Interrupt output pin. It sends a signal to the microcontroller when data is ready or when motion is detected. This eliminates the need for continuous polling, improving processing efficiency and reducing power consumption.
 
 ---
 
@@ -74,7 +74,7 @@ We enable the I2C mode to activate the SDA and SCL pins.
 #define REF_CONFIG_CTRL 107
 ```
 
-At system startup, we initialize the functions that we have defined. Now, let’s go through these functions. First, we start with the `mpu6050_init()` function.
+At system startup, we initialize the functions that we have defined. Now, let’s go through these functions. First, we start with the **`mpu6050_init()`** function.
 
 ```C
 /* USER CODE BEGIN 2 */
@@ -83,7 +83,7 @@ gyro_calibrate();
 /* USER CODE END 2 */
 ```
 
-1.	The `HAL_I2C_IsDeviceReady` function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
+1.	The **`HAL_I2C_IsDeviceReady`** function is a check mechanism that verifies whether the target device (MPU6050) on the STM32 I2C bus is physically present and ready for communication.
 
 ```c
 void mpu6050_init() 
@@ -100,7 +100,7 @@ void mpu6050_init()
 
 ---
 
-2.	``Gyroscope configuration``is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to `±500°/s`.
+2.	**``Gyroscope configuration``**is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to **`±500°/s`**.
 
 ```c
 	// Register 27 – Gyroscope Configuration
@@ -116,7 +116,7 @@ void mpu6050_init()
 
 ---
 
-3.	``Accelerometer configuration``is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to `±4g`.
+3.	**``Accelerometer configuration``**is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to **`±4g`**.
 
 ```c
 	// Register 28 – Accelerometer Configuration
@@ -132,7 +132,7 @@ void mpu6050_init()
 
 ---
 
-4.	The MPU6050 comes from the factory with Sleep Mode enabled to save power. To activate the sensor’s internal oscillator and measurement units, the device is woken up by writing `0` to the `Power Management 1` register.
+4.	The MPU6050 comes from the factory with Sleep Mode enabled to save power. To activate the sensor’s internal oscillator and measurement units, the device is woken up by writing **`0`** to the **`Power Management 1`** register.
 
 ```c
 	// Register 107 – Power Management 1
@@ -149,7 +149,7 @@ void mpu6050_init()
 
 ---
 
-5.	Now let’s talk about the `gyro_calibrate()` function. Gyroscope sensors inherently exhibit a systematic error known as bias, which causes the output to deviate from zero even when the sensor is stationary. The `gyro_calibrate()` function implemented in this project is executed at system startup, during a period when the sensor is assumed to be completely stable, in order to eliminate this error. The function collects 100 samples from all three axes ($g_x, g_y, g_z$), computes their arithmetic mean, and determines the sensor’s static error profile (offset). These bias values are then subtracted from every raw measurement during runtime to normalize the sensor’s zero point. This ``bias compensation``minimizes drift when the sensor is stationary and enables angular velocity measurements with higher accuracy and reduced noise.
+5.	Now let’s talk about the **`gyro_calibrate()`** function. Gyroscope sensors inherently exhibit a systematic error known as bias, which causes the output to deviate from zero even when the sensor is stationary. The **`gyro_calibrate()`** function implemented in this project is executed at system startup, during a period when the sensor is assumed to be completely stable, in order to eliminate this error. The function collects 100 samples from all three axes ($g_x, g_y, g_z$), computes their arithmetic mean, and determines the sensor’s static error profile (offset). These bias values are then subtracted from every raw measurement during runtime to normalize the sensor’s zero point. This **``bias compensation``**minimizes drift when the sensor is stationary and enables angular velocity measurements with higher accuracy and reduced noise.
 
 ```c
 void gyro_calibrate()
@@ -173,7 +173,7 @@ void gyro_calibrate()
 
 ---
 
-6.	This function reads the raw ``accelerometer``and``gyroscope``data from the MPU6050 sensor via``I2C``and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the`HAL_I2C_Mem_Read`function, and the high and low bytes are combined and assigned to the`x_acc`,`y_acc`,and`z_acc`variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the`x_gyr`,`y_gyr`, and`z_gyr`variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
+6.	This function reads the raw **``accelerometer``**and**``gyroscope``**data from the MPU6050 sensor via**``I2C``**and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the**`HAL_I2C_Mem_Read`**function, and the high and low bytes are combined and assigned to the**``x_acc``**,**`y_acc`**,and**`z_acc`**variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the**`x_gyr`**,**`y_gyr`**, and**`z_gyr`**variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
 
 ```c
 void mpu6050_read()
@@ -206,15 +206,15 @@ void mpu6050_read()
 
 ---
 
-7.	The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the ``Euler angles (Roll, Pitch, Yaw),``which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
+7.	The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the **``Euler angles (Roll, Pitch, Yaw),``**which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
 
 ![Airplane_control_Roll_Pitch_Yaw (1)](https://github.com/user-attachments/assets/47011d33-7899-4b49-b2c7-b3fe929cafe9)
 
-- $\phi$ ``(Phi) – Roll:`` Rotation about the longitudinal (X) axis.
-- $\theta$ ``(Theta) – Pitch:`` Rotation about the lateral (Y) axis.
-- $\psi$ ``(Psi) – Yaw:`` Rotation about the vertical (Z) axis.
+- $\phi$ **``(Phi) – Roll:``** Rotation about the longitudinal (X) axis.
+- $\theta$ **``(Theta) – Pitch:``** Rotation about the lateral (Y) axis.
+- $\psi$ **``(Psi) – Yaw:``** Rotation about the vertical (Z) axis.
 
-The `euler_angle(float dt_val)` function calculates the``Roll``and``Pitch``Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and presents the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of `g,`while the gyroscope data are converted to``rad/s``after their offsets are subtracted.
+The **`euler_angle(float dt_val)`** function calculates the**``Roll``**and**``Pitch``**Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and presents the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of **`g,`**while the gyroscope data are converted to**``rad/s``**after their offsets are subtracted.
 
 ```c
 void euler_angle(float dt_val)
@@ -234,9 +234,9 @@ void euler_angle(float dt_val)
 
 ---
 
-8.	Next, the ``Roll (φ)``and``Pitch (θ)``angles are directly calculated from the `accelerometer` data based on the gravity vector.
+8.	Next, the **``Roll (φ)``**and**``Pitch (θ)``**angles are directly calculated from the **`accelerometer`** data based on the gravity vector.
 
-``Roll Angle from the accelerometer`` 
+**``Roll Angle from the accelerometer``**
 
 <img width="504" height="177" alt="Pasted image 20251223232524" src="https://github.com/user-attachments/assets/9225465b-52ec-4a9a-868b-5f0441aade9c" />
 
@@ -252,7 +252,7 @@ $$
 \phi_{\text{Roll}} = arctan(\frac{Acc_Y}{\sqrt{Acc_X^2+Acc_Z^2}})
 $$
 
-``Pitch Angle from the accelerometer``
+**``Pitch Angle from the accelerometer``**
 
 <img width="518" height="172" alt="Pasted image 20251223232559" src="https://github.com/user-attachments/assets/fbfa4ddd-9cb7-4dbb-b9ad-a6aba3577553" />
 
@@ -285,7 +285,7 @@ $$
 
 ---
 
-9.	Gyroscope data produces raw (drift-prone) estimates of the ``Roll (φ)``and ``Pitch (θ)``angles by ``integrating``the angular rate equations over time.
+9.	Gyroscope data produces raw (drift-prone) estimates of the **``Roll (φ)``**and **``Pitch (θ)``**angles by **``integrating``**the angular rate equations over time.
 
 $$
 \begin{bmatrix}
@@ -356,7 +356,7 @@ $$
 
 ---
 
-10.	To overcome the disadvantages of these two approaches, a `Complementary Filter` is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
+10.	To overcome the disadvantages of these two approaches, a **`Complementary Filter`** is applied within the function. The complementary filter is a sensor fusion technique that combines data from two different sensors, suppressing each sensor’s weak points while taking advantage of their strong points. This filter uses one sensor’s output for low-frequency (long-term stable) components and the other sensor’s output for high-frequency (short-term fast-response) components. It is called complementary due to this complementary structure.
 
 <img width="865" height="338" alt="Pasted image 20251224004215" src="https://github.com/user-attachments/assets/ddcc3e35-814e-4a3f-9088-6cc577830511" />
 
@@ -368,7 +368,7 @@ $$
 \alpha:0 < \alpha < 1
 $$
 
-Sensor data exhibit different characteristics depending on their frequency content. The``gyroscope,``which measures an object’s instantaneous angular velocity, captures``high-frequency signals``representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The``accelerometer,``on the other hand, determines the tilt angle relative to the gravity vector and accurately measures``low-frequency components``that are stable in the long term, but it is easily affected by vibrations and sudden movements. The``complementary filter``combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
+Sensor data exhibit different characteristics depending on their frequency content. The**``gyroscope,``**which measures an object’s instantaneous angular velocity, captures**``high-frequency signals``**representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The**``accelerometer,``**on the other hand, determines the tilt angle relative to the gravity vector and accurately measures**``low-frequency components``**that are stable in the long term, but it is easily affected by vibrations and sudden movements. The**``complementary filter``**combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
 
 ```c
     // --- Roll & Pitch Rates from COMPLEMENTARY FILTER ---
@@ -383,11 +383,11 @@ Sensor data exhibit different characteristics depending on their frequency conte
 ---
 
 > [!NOTE]
-> ``Drift error``is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
+> **``Drift error``**is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
 
 ---
 
-11.	Finally, the``Roll (φ)``and``Pitch (θ)``angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
+11.	Finally, the**``Roll (φ)``**and**``Pitch (θ)``**angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
 
 ```c
     // --- UART data transmission ---
