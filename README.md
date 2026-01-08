@@ -28,7 +28,7 @@ MPU6050 is a 6-axis (6-DOF) motion tracking sensor that integrates a 3-axis acce
 
 <img width="197" height="256" alt="images" src="https://github.com/user-attachments/assets/6290fc2a-ce72-4699-a37f-b5923b8fe8d7" />
 
-- **``VCC:``**Power supply input. It is typically powered with 3.3 V or 5 V.
+- **``VCC:``** Power supply input. It is typically powered with 3.3 V or 5 V.
 - **``GND:``**Ground connection.
 - **``SCL (Serial Clock Line):``**Serial clock line. It carries the clock signal that synchronizes the timing and speed of data transmission.
 - **``SDA (Serial Data Line):``**Bidirectional serial data line. Accelerometer and gyroscope data from the sensor are transmitted to the microcontroller through this line.
