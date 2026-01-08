@@ -206,7 +206,7 @@ void mpu6050_read()
 
 ---
 
-7.	The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the **``Euler angles (Roll, Pitch, Yaw),``**which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
+7.	The raw accelerometer and gyroscope data have been read from the MPU6050 sensor. The next objective is to use these raw measurements to obtain the **``Euler angles (Roll, Pitch, Yaw),``** which describe the system’s orientation in space. These three angles represent the rotation of a rigid body about its three principal axes around its center of mass.
 
 ![Airplane_control_Roll_Pitch_Yaw (1)](https://github.com/user-attachments/assets/47011d33-7899-4b49-b2c7-b3fe929cafe9)
 
@@ -214,7 +214,7 @@ void mpu6050_read()
 - $\theta$ **``(Theta) – Pitch:``** Rotation about the lateral (Y) axis.
 - $\psi$ **``(Psi) – Yaw:``** Rotation about the vertical (Z) axis.
 
-The **`euler_angle(float dt_val)`** function calculates the**``Roll``**and**``Pitch``**Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and presents the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of **`g,`**while the gyroscope data are converted to**``rad/s``**after their offsets are subtracted.
+The **`euler_angle(float dt_val)`** function calculates the**``Roll``** and **``Pitch``** Euler angles using the raw accelerometer and gyroscope data read from the MPU6050, and presents the results of different methods in a comparative manner. In the first step, the accelerometer data are normalized according to the selected measurement range and expressed in units of **`g,`** while the gyroscope data are converted to **``rad/s``** after their offsets are subtracted.
 
 ```c
 void euler_angle(float dt_val)
@@ -234,7 +234,7 @@ void euler_angle(float dt_val)
 
 ---
 
-8.	Next, the **``Roll (φ)``**and**``Pitch (θ)``**angles are directly calculated from the **`accelerometer`** data based on the gravity vector.
+8.	Next, the **``Roll (φ)``** and **``Pitch (θ)``** angles are directly calculated from the **`accelerometer`** data based on the gravity vector.
 
 **``Roll Angle from the accelerometer``**
 
@@ -285,7 +285,7 @@ $$
 
 ---
 
-9.	Gyroscope data produces raw (drift-prone) estimates of the **``Roll (φ)``**and **``Pitch (θ)``**angles by **``integrating``**the angular rate equations over time.
+9.	Gyroscope data produces raw (drift-prone) estimates of the **``Roll (φ)``** and **``Pitch (θ)``** angles by **``integrating``** the angular rate equations over time.
 
 $$
 \begin{bmatrix}
@@ -368,7 +368,7 @@ $$
 \alpha:0 < \alpha < 1
 $$
 
-Sensor data exhibit different characteristics depending on their frequency content. The**``gyroscope,``**which measures an object’s instantaneous angular velocity, captures**``high-frequency signals``**representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The**``accelerometer,``**on the other hand, determines the tilt angle relative to the gravity vector and accurately measures**``low-frequency components``**that are stable in the long term, but it is easily affected by vibrations and sudden movements. The**``complementary filter``**combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
+Sensor data exhibit different characteristics depending on their frequency content. The**``gyroscope,``** which measures an object’s instantaneous angular velocity, captures **``high-frequency signals``** representing rapid and sudden movements very well; however, these measurements can accumulate noise and drift over time. The **``accelerometer,``** on the other hand, determines the tilt angle relative to the gravity vector and accurately measures **``low-frequency components``** that are stable in the long term, but it is easily affected by vibrations and sudden movements. The **``complementary filter``** combines the frequency-based strengths of these two sensors, using the gyroscope data in a high-pass filter (HPF) manner and the accelerometer data in a low-pass filter (LPF) manner. In this way, the gyroscope’s fast response is preserved while the accelerometer’s long-term stability continuously corrects drift errors, resulting in more reliable Euler angles.
 
 ```c
     // --- Roll & Pitch Rates from COMPLEMENTARY FILTER ---
@@ -383,11 +383,11 @@ Sensor data exhibit different characteristics depending on their frequency conte
 ---
 
 > [!NOTE]
-> **``Drift error``**is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
+> **``Drift error``** is the gradual deviation of the angle estimate from its true value due to the accumulation of small offsets (biases) and noise in gyroscope measurements during integration over time. This error can increase even when the sensor is stationary. The accelerometer is used to correct this accumulated error over the long term by referencing the gravity vector.
 
 ---
 
-11.	Finally, the**``Roll (φ)``**and**``Pitch (θ)``**angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
+11.	Finally, the**``Roll (φ)``** and **``Pitch (θ)``** angles obtained from the accelerometer, gyroscope, and complementary filter are converted to degrees and transmitted via UART to allow monitoring of the system’s performance. This function does not calculate the Yaw angle because, without a magnetometer or an external directional reference, the absolute value of Yaw cannot be reliably determined using only the accelerometer and gyroscope.
 
 ```c
     // --- UART data transmission ---
