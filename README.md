@@ -29,14 +29,14 @@ MPU6050 is a 6-axis (6-DOF) motion tracking sensor that integrates a 3-axis acce
 <img width="197" height="256" alt="images" src="https://github.com/user-attachments/assets/6290fc2a-ce72-4699-a37f-b5923b8fe8d7" />
 
 - **``VCC:``** Power supply input. It is typically powered with 3.3 V or 5 V.
-- **``GND:``**Ground connection.
-- **``SCL (Serial Clock Line):``**Serial clock line. It carries the clock signal that synchronizes the timing and speed of data transmission.
-- **``SDA (Serial Data Line):``**Bidirectional serial data line. Accelerometer and gyroscope data from the sensor are transmitted to the microcontroller through this line.
-- **``XDA & XCL (Auxiliary Data/Clock):``**Auxiliary I2C lines. They are used to connect a secondary sensor, such as a magnetometer (compass), to the MPU6050 and allow the sensor to process this data directly. In standard applications, these pins are usually left unconnected.
-- **``AD0 (Address Select):``**Used to select the I2C address of the sensor. This pin allows two MPU6050 devices to be connected on the same I2C bus.
+- **``GND:``** Ground connection.
+- **``SCL (Serial Clock Line):``** Serial clock line. It carries the clock signal that synchronizes the timing and speed of data transmission.
+- **``SDA (Serial Data Line):``** Bidirectional serial data line. Accelerometer and gyroscope data from the sensor are transmitted to the microcontroller through this line.
+- **``XDA & XCL (Auxiliary Data/Clock):``** Auxiliary I2C lines. They are used to connect a secondary sensor, such as a magnetometer (compass), to the MPU6050 and allow the sensor to process this data directly. In standard applications, these pins are usually left unconnected.
+- **``AD0 (Address Select):``** Used to select the I2C address of the sensor. This pin allows two MPU6050 devices to be connected on the same I2C bus.
     - **AD0 = 0:** Device address is ``0x68``.
     - **AD0 = 1:** Device address is ``0x69``.
-- **``INT (Interrupt):``**Interrupt output pin. It sends a signal to the microcontroller when data is ready or when motion is detected. This eliminates the need for continuous polling, improving processing efficiency and reducing power consumption.
+- **``INT (Interrupt):``** Interrupt output pin. It sends a signal to the microcontroller when data is ready or when motion is detected. This eliminates the need for continuous polling, improving processing efficiency and reducing power consumption.
 
 ---
 
@@ -100,7 +100,7 @@ void mpu6050_init()
 
 ---
 
-2.	**``Gyroscope configuration``**is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to **`±500°/s`**.
+2.	**``Gyroscope configuration``** is the process of defining the sensitivity range and resolution at which the sensor measures angular velocity (rate of rotation per unit time). In this project, the gyroscope sensitivity is set to **`±500°/s`**.
 
 ```c
 	// Register 27 – Gyroscope Configuration
@@ -116,7 +116,7 @@ void mpu6050_init()
 
 ---
 
-3.	**``Accelerometer configuration``**is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to **`±4g`**.
+3.	**``Accelerometer configuration``** is the process of defining the dynamic range over which the sensor measures linear acceleration (including gravity and motion-induced acceleration) and the resolution of this data. This configuration limits the maximum G-force (gravitational acceleration unit) that the sensor can measure. In this project, the accelerometer sensitivity is set to **`±4g`**.
 
 ```c
 	// Register 28 – Accelerometer Configuration
@@ -149,7 +149,7 @@ void mpu6050_init()
 
 ---
 
-5.	Now let’s talk about the **`gyro_calibrate()`** function. Gyroscope sensors inherently exhibit a systematic error known as bias, which causes the output to deviate from zero even when the sensor is stationary. The **`gyro_calibrate()`** function implemented in this project is executed at system startup, during a period when the sensor is assumed to be completely stable, in order to eliminate this error. The function collects 100 samples from all three axes ($g_x, g_y, g_z$), computes their arithmetic mean, and determines the sensor’s static error profile (offset). These bias values are then subtracted from every raw measurement during runtime to normalize the sensor’s zero point. This **``bias compensation``**minimizes drift when the sensor is stationary and enables angular velocity measurements with higher accuracy and reduced noise.
+5.	Now let’s talk about the **`gyro_calibrate()`** function. Gyroscope sensors inherently exhibit a systematic error known as bias, which causes the output to deviate from zero even when the sensor is stationary. The **`gyro_calibrate()`** function implemented in this project is executed at system startup, during a period when the sensor is assumed to be completely stable, in order to eliminate this error. The function collects 100 samples from all three axes ($g_x, g_y, g_z$), computes their arithmetic mean, and determines the sensor’s static error profile (offset). These bias values are then subtracted from every raw measurement during runtime to normalize the sensor’s zero point. This **``bias compensation``** minimizes drift when the sensor is stationary and enables angular velocity measurements with higher accuracy and reduced noise.
 
 ```c
 void gyro_calibrate()
@@ -173,7 +173,7 @@ void gyro_calibrate()
 
 ---
 
-6.	This function reads the raw **``accelerometer``**and**``gyroscope``**data from the MPU6050 sensor via**``I2C``**and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the**`HAL_I2C_Mem_Read`**function, and the high and low bytes are combined and assigned to the**``x_acc``**,**`y_acc`**,and**`z_acc`**variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the**`x_gyr`**,**`y_gyr`**, and**`z_gyr`**variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
+6.	This function reads the raw **``accelerometer``** and **``gyroscope``** data from the MPU6050 sensor via **``I2C``** and stores them in the corresponding variables. In the first part, the 16-bit raw data of the accelerometer’s X, Y, and Z axes are read from the MPU6050’s consecutive register addresses using the **`HAL_I2C_Mem_Read`** function, and the high and low bytes are combined and assigned to the **``x_acc``** , **`y_acc`** , and **`z_acc`** variables. In the second part, the same procedure is performed for the gyroscope, and the angular velocity data for the X, Y, and Z axes are written to the **`x_gyr`** , **`y_gyr`** , and **`z_gyr`** variables. This function only acquires raw sensor data; scaling, filtering, or angle computation is not performed at this stage.
 
 ```c
 void mpu6050_read()
